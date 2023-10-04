@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.ui.theme
+package com.exchangeratedemoapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build

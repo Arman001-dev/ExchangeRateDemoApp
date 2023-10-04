@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.ui.screens
+package com.exchangeratedemoapp.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,26 +33,25 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exchangeratedemoapp.presentation.ui.models.FiltersOptionEnum
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.presentation.ui.theme.Header
-import com.exchangeratedemoapp.presentation.ui.theme.OnPrimary
-import com.exchangeratedemoapp.presentation.ui.theme.Primary
-import com.exchangeratedemoapp.presentation.ui.theme.Secondary
-import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
-import com.exchangeratedemoapp.presentation.ui.theme.TextSecondary
+import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
+import com.exchangeratedemoapp.presentation.theme.Header
+import com.exchangeratedemoapp.presentation.theme.OnPrimary
+import com.exchangeratedemoapp.presentation.theme.Primary
+import com.exchangeratedemoapp.presentation.theme.Secondary
+import com.exchangeratedemoapp.presentation.theme.TextDefault
+import com.exchangeratedemoapp.presentation.theme.TextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FiltersScreen() {
-    val filtersOption = FiltersOptionEnum.values()
     var selectedFilter by rememberSaveable { mutableStateOf("") }
 
     Column {
         TopAppBar(
             navigationIcon = {
                 IconButton(onClick = {}) {
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                    Icon(Icons.Filled.ArrowBack, null)
                 }
             },
             title = {
@@ -66,8 +65,7 @@ fun FiltersScreen() {
                 )
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Header,
-                navigationIconContentColor = Primary
+                containerColor = Header
             )
         )
         Column(modifier = Modifier.padding(16.dp)) {
@@ -80,7 +78,7 @@ fun FiltersScreen() {
                     color = TextSecondary,
                 ),
             )
-            filtersOption.forEach { filter ->
+            FiltersOptionEnum.values().forEach { filter ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -92,11 +90,11 @@ fun FiltersScreen() {
                             color = TextDefault,
                             fontFamily = FontFamily(Font(R.font.inter_medium)),
                         ),
-                        text = filter.value,
+                        text = filter.label,
                     )
                     RadioButton(
-                        selected = (selectedFilter == filter.value),
-                        onClick = { selectedFilter = filter.value },
+                        selected = (selectedFilter == filter.label),
+                        onClick = { selectedFilter = filter.label },
                         colors = RadioButtonDefaults.colors(
                             selectedColor = Primary,
                             unselectedColor = Secondary,

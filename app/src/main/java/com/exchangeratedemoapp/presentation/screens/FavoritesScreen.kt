@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.ui.screens
+package com.exchangeratedemoapp.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exchangeratedemoapp.presentation.ui.models.Currency
+import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.presentation.ui.theme.Header
-import com.exchangeratedemoapp.presentation.ui.theme.Primary
-import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
+import com.exchangeratedemoapp.presentation.theme.Header
+import com.exchangeratedemoapp.presentation.theme.Primary
+import com.exchangeratedemoapp.presentation.theme.TextDefault
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,8 +49,7 @@ fun FavoritesScreen() {
                 )
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Header,
-                navigationIconContentColor = Primary
+                containerColor = Header
             )
         )
         LazyColumn(

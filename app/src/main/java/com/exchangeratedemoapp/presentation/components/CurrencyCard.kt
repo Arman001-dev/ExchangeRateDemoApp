@@ -18,15 +18,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exchangeratedemoapp.presentation.ui.models.Currency
+import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.presentation.ui.theme.Secondary
-import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
-import com.exchangeratedemoapp.presentation.ui.theme.Yellow
+import com.exchangeratedemoapp.presentation.theme.Secondary
+import com.exchangeratedemoapp.presentation.theme.TextDefault
+import com.exchangeratedemoapp.presentation.theme.Yellow
 
 @Composable
 fun CurrencyCard(currency: Currency) {
-    Card(colors = CardDefaults.cardColors(containerColor = com.exchangeratedemoapp.presentation.ui.theme.Card)) {
+    Card(colors = CardDefaults.cardColors(containerColor = com.exchangeratedemoapp.presentation.theme.Card)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,7 +54,7 @@ fun CurrencyCard(currency: Currency) {
                 )
                 Icon(
                     painter = if (currency.isFavorite) painterResource(id = R.drawable.icon_favorites_on) else painterResource(id = R.drawable.icon_favorites_off),
-                    contentDescription = "Currency favorite",
+                    contentDescription = null,
                     tint = if (currency.isFavorite) Yellow else Secondary,
                 )
             }

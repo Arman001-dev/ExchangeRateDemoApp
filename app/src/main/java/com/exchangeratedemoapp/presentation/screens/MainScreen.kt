@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.ui.screens
+package com.exchangeratedemoapp.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +25,7 @@ sealed class BottomBarDestination(val route: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val bottomBarNavController = rememberNavController()
+    val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
@@ -42,10 +42,10 @@ fun MainScreen() {
                         icon = painterResource(id = R.drawable.icon_favorites_on),
                     ),
                 ),
-                navController = bottomBarNavController,
+                navController = navController,
                 onItemClick = {
-                    bottomBarNavController.navigate(it.route) {
-                        popUpTo(bottomBarNavController.graph.findStartDestination().id) {
+                    navController.navigate(it.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
                         launchSingleTop = true
@@ -60,7 +60,7 @@ fun MainScreen() {
                 .fillMaxSize()
                 .padding(it),
         ) {
-            NavHost(navController = bottomBarNavController, startDestination = BottomBarDestination.CurrenciesScreen.route) {
+            NavHost(navController = navController, startDestination = BottomBarDestination.CurrenciesScreen.route) {
 
                 composable(BottomBarDestination.CurrenciesScreen.route) {
                     CurrenciesScreen()
