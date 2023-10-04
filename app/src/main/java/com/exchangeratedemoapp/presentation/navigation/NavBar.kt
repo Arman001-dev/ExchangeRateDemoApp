@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.presentation.ui.theme.LightPrimary
-import com.exchangeratedemoapp.presentation.ui.theme.Outline
-import com.exchangeratedemoapp.presentation.ui.theme.Primary
-import com.exchangeratedemoapp.presentation.ui.theme.Secondary
-import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
+import com.exchangeratedemoapp.presentation.theme.LightPrimary
+import com.exchangeratedemoapp.presentation.theme.Outline
+import com.exchangeratedemoapp.presentation.theme.Primary
+import com.exchangeratedemoapp.presentation.theme.Secondary
+import com.exchangeratedemoapp.presentation.theme.TextDefault
 
 @Composable
 fun NavBar(
@@ -47,7 +47,8 @@ fun NavBar(
                     },
                     label = {
                         Text(
-                            text = navBarItem.name, style = TextStyle(
+                            text = navBarItem.name,
+                            style = TextStyle(
                                 fontSize = 12.sp,
                                 fontFamily = FontFamily(Font(R.font.inter_medium)),
                             )

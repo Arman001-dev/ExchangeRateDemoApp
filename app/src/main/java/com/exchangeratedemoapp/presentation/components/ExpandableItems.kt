@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.presentation.ui.theme.Default
-import com.exchangeratedemoapp.presentation.ui.theme.Primary
-import com.exchangeratedemoapp.presentation.ui.theme.Secondary
+import com.exchangeratedemoapp.presentation.theme.Default
+import com.exchangeratedemoapp.presentation.theme.Primary
+import com.exchangeratedemoapp.presentation.theme.Secondary
 
 @Composable
 fun ExpandableItems() {

@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.ui.screens
+package com.exchangeratedemoapp.presentation.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.components.ExpandableItems
-import com.exchangeratedemoapp.presentation.ui.theme.Default
-import com.exchangeratedemoapp.presentation.ui.theme.Header
-import com.exchangeratedemoapp.presentation.ui.theme.Outline
-import com.exchangeratedemoapp.presentation.ui.theme.Primary
-import com.exchangeratedemoapp.presentation.ui.theme.Secondary
-import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
+import com.exchangeratedemoapp.presentation.theme.Default
+import com.exchangeratedemoapp.presentation.theme.Header
+import com.exchangeratedemoapp.presentation.theme.Outline
+import com.exchangeratedemoapp.presentation.theme.Primary
+import com.exchangeratedemoapp.presentation.theme.Secondary
+import com.exchangeratedemoapp.presentation.theme.TextDefault
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
