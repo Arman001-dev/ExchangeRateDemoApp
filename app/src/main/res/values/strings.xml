@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ExchangeRateDemoApp</string>
+
+    <string name="currencies">Currencies</string>
+    <string name="favorites">Favorites</string>
+    <string name="sort_by">SORT BY</string>
+    <string name="apply">Apply</string>
+    <string name="filters">Filters</string>
 </resources>
