@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +38,7 @@ import com.exchangeratedemoapp.presentation.ui.models.FiltersOptionEnum
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.ui.theme.Header
 import com.exchangeratedemoapp.presentation.ui.theme.OnPrimary
+import com.exchangeratedemoapp.presentation.ui.theme.Outline
 import com.exchangeratedemoapp.presentation.ui.theme.Primary
 import com.exchangeratedemoapp.presentation.ui.theme.Secondary
 import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
@@ -70,6 +72,7 @@ fun FiltersScreen() {
                 navigationIconContentColor = Primary
             )
         )
+        Divider(thickness = 1.dp, color = Outline)
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 modifier = Modifier.padding(bottom = 12.dp),

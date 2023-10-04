@@ -35,6 +35,7 @@ fun CurrencyCard(currency: Currency) {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
+                modifier = Modifier.weight(1f),
                 text = currency.currency,
                 style = TextStyle(
                     fontSize = 14.sp,
@@ -42,22 +43,20 @@ fun CurrencyCard(currency: Currency) {
                     color = TextDefault,
                 )
             )
-            Row {
-                Text(
-                    modifier = Modifier.padding(end = 16.dp),
-                    text = currency.rate,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_medium)),
-                        color = TextDefault,
-                    )
+            Text(
+                modifier = Modifier.padding(end = 16.dp),
+                text = currency.rate,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.inter_medium)),
+                    color = TextDefault,
                 )
-                Icon(
-                    painter = if (currency.isFavorite) painterResource(id = R.drawable.icon_favorites_on) else painterResource(id = R.drawable.icon_favorites_off),
-                    contentDescription = "Currency favorite",
-                    tint = if (currency.isFavorite) Yellow else Secondary,
-                )
-            }
+            )
+            Icon(
+                painter = if (currency.isFavorite) painterResource(id = R.drawable.ic_favorites_on) else painterResource(id = R.drawable.ic_favorites_off),
+                contentDescription = "Currency favorite",
+                tint = if (currency.isFavorite) Yellow else Secondary,
+            )
         }
     }
 }

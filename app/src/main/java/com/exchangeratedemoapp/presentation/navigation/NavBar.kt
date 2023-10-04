@@ -1,5 +1,7 @@
 package com.exchangeratedemoapp.presentation.navigation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.ui.theme.LightPrimary
+import com.exchangeratedemoapp.presentation.ui.theme.Outline
 import com.exchangeratedemoapp.presentation.ui.theme.Primary
 import com.exchangeratedemoapp.presentation.ui.theme.Secondary
 import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
@@ -28,34 +31,37 @@ fun NavBar(
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
-    NavigationBar(tonalElevation = 0.dp) {
-        items.forEach { navBarItem ->
-            val selected = currentBackStackEntry?.destination?.route == navBarItem.route
-            NavigationBarItem(
-                selected = selected,
-                onClick = { onItemClick(navBarItem) },
-                icon = {
-                    Icon(
-                        painter = navBarItem.icon,
-                        contentDescription = navBarItem.name,
-                    )
-                },
-                label = {
-                    Text(
-                        text = navBarItem.name, style = TextStyle(
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_medium)),
+    Column {
+        Divider(thickness = 1.dp, color = Outline)
+        NavigationBar(tonalElevation = 0.dp) {
+            items.forEach { navBarItem ->
+                val selected = currentBackStackEntry?.destination?.route == navBarItem.route
+                NavigationBarItem(
+                    selected = selected,
+                    onClick = { onItemClick(navBarItem) },
+                    icon = {
+                        Icon(
+                            painter = navBarItem.icon,
+                            contentDescription = navBarItem.name,
                         )
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = LightPrimary,
-                    selectedIconColor = Primary,
-                    unselectedIconColor = Secondary,
-                    selectedTextColor = TextDefault,
-                    unselectedTextColor = Secondary
-                ),
-            )
+                    },
+                    label = {
+                        Text(
+                            text = navBarItem.name, style = TextStyle(
+                                fontSize = 12.sp,
+                                fontFamily = FontFamily(Font(R.font.inter_medium)),
+                            )
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = LightPrimary,
+                        selectedIconColor = Primary,
+                        unselectedIconColor = Secondary,
+                        selectedTextColor = TextDefault,
+                        unselectedTextColor = Secondary
+                    ),
+                )
+            }
         }
     }
 }

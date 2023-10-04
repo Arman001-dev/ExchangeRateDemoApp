@@ -34,22 +34,19 @@ fun MainScreen() {
                     NavBarItem(
                         name = stringResource(R.string.currencies),
                         route = BottomBarDestination.CurrenciesScreen.route,
-                        icon = painterResource(id = R.drawable.icon_currencies),
+                        icon = painterResource(id = R.drawable.ic_currencies),
                     ),
                     NavBarItem(
                         name = stringResource(R.string.favorites),
                         route = BottomBarDestination.FavoritesScreen.route,
-                        icon = painterResource(id = R.drawable.icon_favorites_on),
+                        icon = painterResource(id = R.drawable.ic_favorites_on),
                     ),
                 ),
                 navController = bottomBarNavController,
                 onItemClick = {
                     bottomBarNavController.navigate(it.route) {
-                        popUpTo(bottomBarNavController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
+                        popUpTo(bottomBarNavController.graph.findStartDestination().id)
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
             )

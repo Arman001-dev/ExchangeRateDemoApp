@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,6 +23,7 @@ import com.exchangeratedemoapp.presentation.ui.models.Currency
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.ui.theme.Header
+import com.exchangeratedemoapp.presentation.ui.theme.Outline
 import com.exchangeratedemoapp.presentation.ui.theme.Primary
 import com.exchangeratedemoapp.presentation.ui.theme.TextDefault
 
@@ -53,6 +55,7 @@ fun FavoritesScreen() {
                 navigationIconContentColor = Primary
             )
         )
+        Divider(thickness = 1.dp, color = Outline)
         LazyColumn(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
