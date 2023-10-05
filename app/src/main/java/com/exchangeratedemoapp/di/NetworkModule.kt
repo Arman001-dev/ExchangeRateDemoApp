@@ -1,6 +1,7 @@
 package com.exchangeratedemoapp.di
 
-import com.exchangeratedemoapp.data.remote.api.ExchangeRatesService
+import com.exchangeratedemoapp.data.remote.api.net.ExchangeRatesApiService
+import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://api.apilayer.com/exchangerates_data/"
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient =
@@ -23,14 +23,9 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.EXCHANGE_RATE_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-    }
-
-    @Provides
-    fun provideExchangeRatesService(retrofit: Retrofit): ExchangeRatesService {
-        return retrofit.create(ExchangeRatesService::class.java)
     }
 }

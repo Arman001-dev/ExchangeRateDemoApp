@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.R
+import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.presentation.theme.Secondary
 import com.exchangeratedemoapp.presentation.theme.TextDefault
 import com.exchangeratedemoapp.presentation.theme.Yellow
@@ -45,7 +45,7 @@ fun CurrencyCard(currency: Currency) {
             )
             Text(
                 modifier = Modifier.padding(end = 16.dp),
-                text = currency.rate,
+                text = currency.rate.toString(),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = FontFamily(Font(R.font.inter_medium)),
@@ -64,5 +64,5 @@ fun CurrencyCard(currency: Currency) {
 @Composable
 @Preview(showBackground = true)
 private fun CurrencyCardPreview() {
-    CurrencyCard(Currency("EUR", "AED", "3.345461", true))
+    CurrencyCard(Currency("EUR", "AED", 3.345461, true))
 }

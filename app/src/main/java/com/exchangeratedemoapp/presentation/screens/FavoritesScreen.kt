@@ -19,12 +19,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
-import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.Outline
-import com.exchangeratedemoapp.presentation.theme.Primary
 import com.exchangeratedemoapp.presentation.theme.TextDefault
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,11 +31,11 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 fun FavoritesScreen() {
 
     val items = listOf(
-        Currency("EUR", "BYN", "3.345461", true),
-        Currency("EUR", "AED", "3.345461", false),
-        Currency("AED", "RUB", "3.345461", true),
-        Currency("EUR", "AED", "3.345461", true),
-        Currency("RUB", "AED", "6.345461", false)
+        Currency("EUR", "BYN", 3.345461, true),
+        Currency("EUR", "AED", 3.345461, false),
+        Currency("AED", "RUB", 3.345461, true),
+        Currency("EUR", "AED", 3.345461, true),
+        Currency("RUB", "AED", 6.345461, false)
     )
     Column {
         TopAppBar(
