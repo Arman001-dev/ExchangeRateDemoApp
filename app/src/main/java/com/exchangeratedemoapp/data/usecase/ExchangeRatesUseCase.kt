@@ -1,6 +1,5 @@
 package com.exchangeratedemoapp.data.usecase
 
-import com.exchangeratedemoapp.data.remote.api.repositories.ExchangeRatesRepositoryImpl
 import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.domain.models.ExchangeRate
 import com.exchangeratedemoapp.domain.remote.api.models.ExchangeRatesDto
@@ -10,23 +9,17 @@ import com.exchangeratedemoapp.domain.utils.base.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 class ExchangeRatesUseCase(private val repository: ExchangeRatesRepository) {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Default)
 
-    suspend operator fun invoke(symbols: String, base: String) = flow<ApiResult<ExchangeRate>> {
-        val result = repository.getExchangeRates(symbols, base)
-        scope.launch {
-            result.collectLatest {
-                when (it) {
-                    is ApiResult.Error -> emit(ApiResult.Error(it.message))
-                    is ApiResult.Success -> emit(ApiResult.Success(toExchangeRate(it.data)))
-                }
-            }
+    suspend operator fun invoke(base: String, symbols: List<String>) = flow {
+        val result = repository.getExchangeRates(base, symbols)
+        when (result.isSuccessful) {
+            true -> emit(ApiResult.Success(toExchangeRate(result.body())))
+            false -> emit(ApiResult.Error(result.message()))
         }
     }
 
