@@ -21,7 +21,7 @@ import javax.inject.Inject
 class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: ExchangeRatesUseCase) : ViewModel() {
 
     init {
-        getExchangeRates(CurrenciesEnum.EUR.label, listOf(CurrenciesEnum.AED.label, CurrenciesEnum.AMD.label, CurrenciesEnum.RUB.label, CurrenciesEnum.USD.label))
+        getExchangeRates(CurrenciesEnum.EUR)
     }
 
     private val _currency: MutableStateFlow<CurrenciesEnum?> = MutableStateFlow(CurrenciesEnum.EUR)
@@ -34,9 +34,9 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
         _currency.update { currency }
     }
 
-    fun getExchangeRates(base: String, symbols: List<String>) {
+    fun getExchangeRates(base: CurrenciesEnum) {
         viewModelScope.launch {
-            exchangeRatesUseCase.invoke(base, symbols).collectLatest { result ->
+            exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(CurrenciesEnum.EUR) }.map { it.label }).collectLatest { result ->
                 when (result) {
                     is ApiResult.Success -> {
                         Log.d(Constants.EXCHANGE_RATE_TAG, "Success:${result.data}")
