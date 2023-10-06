@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,14 +33,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
+import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.presentation.theme.Default
 import com.exchangeratedemoapp.presentation.theme.Primary
 import com.exchangeratedemoapp.presentation.theme.Secondary
 
 @Composable
-fun ExpandableItems() {
+fun ExpandableItems(
+    currentCurrency: CurrenciesEnum = CurrenciesEnum.EUR,
+    onCurrencyClick: (currency: CurrenciesEnum) -> Unit = {}
+) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
-    val list = listOf("AED", "RUB", "USD")
 
     val arrowDirection by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 360f, label = ""
@@ -47,8 +51,7 @@ fun ExpandableItems() {
 
     Card(
         modifier = Modifier
-            .width(310.dp)
-            .clickable { isExpanded = !isExpanded },
+            .width(310.dp),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(width = 1.dp, color = Secondary),
         colors = CardDefaults.cardColors(containerColor = Default),
@@ -56,23 +59,26 @@ fun ExpandableItems() {
         Column {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .clickable { isExpanded = !isExpanded }
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "EUR",
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    text = currentCurrency.label,
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.inter_medium))
-                    )
+                    ),
                 )
                 Icon(
-                    modifier = Modifier.rotate(arrowDirection),
+                    modifier = Modifier
+                        .rotate(arrowDirection)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     painter = painterResource(id = R.drawable.ic_arrow_down),
                     contentDescription = null,
-                    tint = Primary
+                    tint = Primary,
                 )
             }
             AnimatedVisibility(
@@ -82,9 +88,19 @@ fun ExpandableItems() {
                 )
             ) {
                 Column {
-                    list.forEach { currency ->
-                        Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                            Text(text = currency)
+                    CurrenciesEnum.values().forEach { currency ->
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = if (currency.label == currentCurrency.label) Secondary else Default)
+                            .clickable {
+                                onCurrencyClick(currency)
+                                isExpanded = !isExpanded
+                            }
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                text = currency.label,
+                            )
                         }
                     }
                 }
