@@ -3,7 +3,7 @@ package com.exchangeratedemoapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.exchangeratedemoapp.presentation.screens.MainScreen
+import com.exchangeratedemoapp.presentation.screens.Navigation
 import com.exchangeratedemoapp.presentation.theme.ExchangeRateDemoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ExchangeRateDemoAppTheme {
-                MainScreen()
+                Navigation()
             }
         }
     }

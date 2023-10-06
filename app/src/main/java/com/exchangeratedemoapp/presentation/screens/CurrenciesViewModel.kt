@@ -24,19 +24,19 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
         getExchangeRates(CurrenciesEnum.EUR)
     }
 
-    private val _currency: MutableStateFlow<CurrenciesEnum?> = MutableStateFlow(CurrenciesEnum.EUR)
-    val currency: StateFlow<CurrenciesEnum?> = _currency.asStateFlow()
+    private val _currentCurrency: MutableStateFlow<CurrenciesEnum?> = MutableStateFlow(CurrenciesEnum.EUR)
+    val currentCurrency: StateFlow<CurrenciesEnum?> = _currentCurrency.asStateFlow()
 
     private val _exchangeRates: MutableStateFlow<ExchangeRate?> = MutableStateFlow(null)
     val exchangeRates: StateFlow<ExchangeRate?> = _exchangeRates.asStateFlow()
 
     fun setCurrency(currency: CurrenciesEnum?) {
-        _currency.update { currency }
+        _currentCurrency.update { currency }
     }
 
     fun getExchangeRates(base: CurrenciesEnum) {
         viewModelScope.launch {
-            exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(CurrenciesEnum.EUR) }.map { it.label }).collectLatest { result ->
+            exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
                 when (result) {
                     is ApiResult.Success -> {
                         Log.d(Constants.EXCHANGE_RATE_TAG, "Success:${result.data}")

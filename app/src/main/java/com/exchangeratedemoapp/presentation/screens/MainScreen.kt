@@ -24,7 +24,9 @@ sealed class BottomBarDestination(val route: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onNavigateToFilterScreen: () -> Unit
+) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -60,7 +62,7 @@ fun MainScreen() {
             NavHost(navController = navController, startDestination = BottomBarDestination.CurrenciesScreen.route) {
 
                 composable(BottomBarDestination.CurrenciesScreen.route) {
-                    CurrenciesScreen()
+                    CurrenciesScreen(onNavigateToFilterScreen = onNavigateToFilterScreen)
                 }
 
                 composable(BottomBarDestination.FavoritesScreen.route) {

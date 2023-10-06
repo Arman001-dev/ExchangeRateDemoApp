@@ -38,21 +38,23 @@ import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.OnPrimary
+import com.exchangeratedemoapp.presentation.theme.Outline
 import com.exchangeratedemoapp.presentation.theme.Primary
 import com.exchangeratedemoapp.presentation.theme.Secondary
 import com.exchangeratedemoapp.presentation.theme.TextDefault
 import com.exchangeratedemoapp.presentation.theme.TextSecondary
-import com.exchangeratedemoapp.presentation.theme.Outline
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FiltersScreen() {
+fun FiltersScreen(
+    onBackClick: () -> Unit = {}
+) {
     var selectedFilter by rememberSaveable { mutableStateOf("") }
 
     Column {
         TopAppBar(
             navigationIcon = {
-                IconButton(onClick = {}) {
+                IconButton(onClick = onBackClick) {
                     Icon(Icons.Filled.ArrowBack, null)
                 }
             },

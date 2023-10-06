@@ -2,11 +2,14 @@ package com.exchangeratedemoapp.presentation.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.exchangeratedemoapp.R
+import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.components.ExpandableItems
 import com.exchangeratedemoapp.presentation.theme.Default
 import com.exchangeratedemoapp.presentation.theme.Header
@@ -41,9 +45,11 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrenciesScreen(
-    currenciesViewModel: CurrenciesViewModel = hiltViewModel()
+    currenciesViewModel: CurrenciesViewModel = hiltViewModel(),
+    onNavigateToFilterScreen: () -> Unit = {}
 ) {
-    val currency by currenciesViewModel.currency.collectAsState()
+    val currentCurrency by currenciesViewModel.currentCurrency.collectAsState()
+    val exchangeRates by currenciesViewModel.exchangeRates.collectAsState()
     Column {
         TopAppBar(
             title = {
@@ -68,13 +74,16 @@ fun CurrenciesScreen(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            currency?.let {
+            currentCurrency?.let {
                 ExpandableItems(it) {
                     currenciesViewModel.setCurrency(it)
+                    currenciesViewModel.getExchangeRates(it)
                 }
             }
             Card(
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .clickable { onNavigateToFilterScreen() },
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(width = 1.dp, color = Secondary),
                 colors = CardDefaults.cardColors(containerColor = Default),
@@ -89,6 +98,15 @@ fun CurrenciesScreen(
             }
         }
         Divider(thickness = 1.dp, color = Outline)
+
+        LazyColumn(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(exchangeRates?.rates ?: emptyList()) { item ->
+                CurrencyCard(currency = item)
+            }
+        }
     }
 }
 
