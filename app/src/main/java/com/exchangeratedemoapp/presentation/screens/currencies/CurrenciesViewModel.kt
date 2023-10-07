@@ -35,7 +35,6 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
             exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
                 when (result) {
                     is ApiResult.Success -> {
-                        Log.d(Constants.EXCHANGE_RATE_TAG, "Success:${result.data}")
                         _exchangeRates.update { result.data.rates }
                     }
 
@@ -44,6 +43,24 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
             }
         }
     }
+
+//    fun getAllFavoriteRates() {
+//        viewModelScope.launch {
+//            exchangeRatesUseCase.getAllFavoriteRates().collectLatest { favoriteCurrencies ->
+//                Log.d(Constants.EXCHANGE_RATE_TAG, "CurrenciesViewModel favorites:$favoriteCurrencies")
+//                val list = exchangeRates.value?.toMutableList()?.map {
+//                    it.copy(
+//                        isFavorite = favoriteCurrencies.find { favoriteCurrency ->
+//                            it.key == favoriteCurrency.key
+//                        } != null
+//                    )
+//                }
+//                _exchangeRates.update { currencies ->
+//                    list
+//                }
+//            }
+//        }
+//    }
 
     fun setFavoriteRate(currency: Currency) {
         viewModelScope.launch {

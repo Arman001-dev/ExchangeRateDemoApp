@@ -5,10 +5,8 @@ import com.exchangeratedemoapp.domain.remote.api.repositories.DatabaseRepository
 import kotlinx.coroutines.flow.flow
 
 class FavoritesUseCase(private val databaseRepository: DatabaseRepository) {
-    suspend fun getAllFavoriteRate() = flow {
-        val result = databaseRepository.getAllRates()
-        emit(result)
-    }
+
+    fun getAllFavoriteRate() = databaseRepository.getAllRates()
 
     suspend fun insertFavoriteRate(currency: Currency) {
         databaseRepository.insertFavoriteRate(currency)

@@ -6,9 +6,10 @@ import java.io.Serializable
 
 @Entity(tableName = "currency")
 data class Currency(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val currency: String,
     val baseCurrency: String,
     val rate: Double,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    @PrimaryKey
+    val key: String = currency + baseCurrency,
 ) : Serializable

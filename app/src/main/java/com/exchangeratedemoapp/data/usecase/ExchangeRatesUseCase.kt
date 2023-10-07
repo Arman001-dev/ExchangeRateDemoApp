@@ -34,6 +34,8 @@ class ExchangeRatesUseCase(private val apiRequestRepository: ApiRequestRepositor
         )
     }
 
+    fun getAllFavoriteRates() = databaseRepository.getAllRates()
+
     suspend fun insertFavoriteRate(currency: Currency) {
         databaseRepository.insertFavoriteRate(currency)
     }

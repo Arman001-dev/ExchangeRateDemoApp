@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class DatabaseRepositoryImpl(private val dao: CurrencyDao) : DatabaseRepository {
-    override fun getAllRates(): Flow<List<Currency>> = flow {
-        dao.getAllRates()
-    }
+    override fun getAllRates(): Flow<List<Currency>> = dao.getAllRates()
 
     override suspend fun insertFavoriteRate(currency: Currency) = dao.insertRate(currency = currency)
 
