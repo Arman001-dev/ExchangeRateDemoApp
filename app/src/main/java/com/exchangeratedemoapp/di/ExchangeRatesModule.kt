@@ -1,9 +1,9 @@
 package com.exchangeratedemoapp.di
 
 import com.exchangeratedemoapp.data.remote.api.net.ExchangeRatesApiService
-import com.exchangeratedemoapp.data.remote.api.repositories.ExchangeRatesRepositoryImpl
 import com.exchangeratedemoapp.data.usecase.ExchangeRatesUseCase
-import com.exchangeratedemoapp.domain.remote.api.repositories.ExchangeRatesRepository
+import com.exchangeratedemoapp.domain.remote.api.repositories.ApiRequestRepository
+import com.exchangeratedemoapp.domain.remote.api.repositories.DatabaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,13 +22,7 @@ object ExchangeRatesModule {
 
     @Provides
     @Singleton
-    fun provideExchangeRatesRepository(api: ExchangeRatesApiService): ExchangeRatesRepository {
-        return ExchangeRatesRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun provideExchangeRatesUseCase(exchangeRatesRepository: ExchangeRatesRepository): ExchangeRatesUseCase {
-        return ExchangeRatesUseCase(exchangeRatesRepository)
+    fun provideExchangeRatesUseCase(apiRequestRepository: ApiRequestRepository, databaseRepository: DatabaseRepository): ExchangeRatesUseCase {
+        return ExchangeRatesUseCase(apiRequestRepository, databaseRepository)
     }
 }

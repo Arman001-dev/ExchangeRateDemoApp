@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.screens
+package com.exchangeratedemoapp.presentation.screens.filters
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
+import com.exchangeratedemoapp.presentation.screens.favorites.FavoritesScreen
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.OnPrimary
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -47,7 +48,8 @@ import com.exchangeratedemoapp.presentation.theme.TextSecondary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FiltersScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onNavigateToMainScreen: () -> Unit = {}
 ) {
     var selectedFilter by rememberSaveable { mutableStateOf("") }
 
@@ -113,7 +115,7 @@ fun FiltersScreen(
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { /*TODO*/ },
+                    onClick = { onNavigateToMainScreen() },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)
                 ) {
                     Text(

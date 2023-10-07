@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.screens
+package com.exchangeratedemoapp.presentation.screens.favorites
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -19,8 +22,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -28,15 +31,21 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritesScreen() {
+fun FavoritesScreen(
+    favoritesViewModel: FavoritesViewModel = hiltViewModel()
+) {
+    val favoriteRates by favoritesViewModel.favoriteRates.collectAsState()
 
-    val items = listOf(
-        Currency("EUR", "BYN", 3.345461, true),
-        Currency("EUR", "AED", 3.345461, false),
-        Currency("AED", "RUB", 3.345461, true),
-        Currency("EUR", "AED", 3.345461, true),
-        Currency("RUB", "AED", 6.345461, false)
-    )
+//    val items = listOf(
+//        Currency(currency = "EUR", baseCurrency = "BYN", rate = 3.345461, isFavorite = true),
+//        Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = false),
+//        Currency(currency = "AED", baseCurrency = "RUB", rate = 3.345461, isFavorite = true),
+//        Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = true),
+//        Currency(currency = "RUB", baseCurrency = "AED", rate = 6.345461, isFavorite = false)
+//    )
+    LaunchedEffect(true){
+        favoritesViewModel.getFavoriteRates()
+    }
     Column {
         TopAppBar(
             title = {
@@ -58,8 +67,12 @@ fun FavoritesScreen() {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items) { item ->
-                CurrencyCard(currency = item)
+            items(favoriteRates ?: emptyList()) { currency ->
+                CurrencyCard(
+                    currency = currency,
+                    insertFavoriteRate = { favoritesViewModel.setFavoriteRate(currency) },
+                    deleteFavoriteRate = { favoritesViewModel.deleteFavoriteRate(currency) }
+                )
             }
         }
     }

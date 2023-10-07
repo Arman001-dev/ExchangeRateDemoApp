@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.exchangeratedemoapp.presentation.screens.filters.FiltersScreen
 
 sealed class NavDestination(val route: String) {
     data object MainScreen : NavDestination("main-screen")
@@ -21,7 +22,10 @@ fun Navigation() {
         }
 
         composable(NavDestination.FiltersScreen.route) {
-            FiltersScreen(onBackClick = { navController.navigateUp() })
+            FiltersScreen(
+                onBackClick = { navController.navigateUp() },
+                onNavigateToMainScreen = { navController.navigate(NavDestination.MainScreen.route) }
+            )
         }
     }
 }

@@ -1,11 +1,11 @@
-package com.exchangeratedemoapp.presentation.screens
+package com.exchangeratedemoapp.presentation.screens.currencies
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.exchangeratedemoapp.data.usecase.ExchangeRatesUseCase
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
-import com.exchangeratedemoapp.domain.models.ExchangeRate
+import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.domain.remote.api.models.base.ApiResult
 import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,15 +20,11 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: ExchangeRatesUseCase) : ViewModel() {
 
-    init {
-        getExchangeRates(CurrenciesEnum.EUR)
-    }
-
     private val _currentCurrency: MutableStateFlow<CurrenciesEnum?> = MutableStateFlow(CurrenciesEnum.EUR)
     val currentCurrency: StateFlow<CurrenciesEnum?> = _currentCurrency.asStateFlow()
 
-    private val _exchangeRates: MutableStateFlow<ExchangeRate?> = MutableStateFlow(null)
-    val exchangeRates: StateFlow<ExchangeRate?> = _exchangeRates.asStateFlow()
+    private val _exchangeRates: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
+    val exchangeRates: StateFlow<List<Currency>?> = _exchangeRates.asStateFlow()
 
     fun setCurrency(currency: CurrenciesEnum?) {
         _currentCurrency.update { currency }
@@ -40,12 +36,24 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
                 when (result) {
                     is ApiResult.Success -> {
                         Log.d(Constants.EXCHANGE_RATE_TAG, "Success:${result.data}")
-                        _exchangeRates.update { result.data }
+                        _exchangeRates.update { result.data.rates }
                     }
 
                     is ApiResult.Error -> Log.d(Constants.EXCHANGE_RATE_TAG, "Error:${result.message}")
                 }
             }
+        }
+    }
+
+    fun setFavoriteRate(currency: Currency) {
+        viewModelScope.launch {
+            exchangeRatesUseCase.insertFavoriteRate(currency)
+        }
+    }
+
+    fun deleteFavoriteRate(currency: Currency){
+        viewModelScope.launch {
+            exchangeRatesUseCase.deleteFavoriteRate(currency)
         }
     }
 }

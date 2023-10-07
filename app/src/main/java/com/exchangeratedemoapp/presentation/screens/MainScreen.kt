@@ -16,6 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.navigation.NavBar
 import com.exchangeratedemoapp.presentation.navigation.NavBarItem
+import com.exchangeratedemoapp.presentation.screens.currencies.CurrenciesScreen
+import com.exchangeratedemoapp.presentation.screens.favorites.FavoritesScreen
 
 sealed class BottomBarDestination(val route: String) {
     data object CurrenciesScreen : BottomBarDestination("currencies-screen")

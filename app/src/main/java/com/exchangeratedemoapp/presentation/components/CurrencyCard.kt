@@ -30,7 +30,11 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 import com.exchangeratedemoapp.presentation.theme.Yellow
 
 @Composable
-fun CurrencyCard(currency: Currency) {
+fun CurrencyCard(
+    currency: Currency,
+    insertFavoriteRate: () -> Unit = {},
+    deleteFavoriteRate: () -> Unit = {},
+) {
     Card(colors = CardDefaults.cardColors(containerColor = com.exchangeratedemoapp.presentation.theme.Card)) {
         var isFavorite by rememberSaveable { mutableStateOf(currency.isFavorite) }
         Row(
@@ -62,6 +66,7 @@ fun CurrencyCard(currency: Currency) {
                 modifier = Modifier.clickable {
                     isFavorite = !isFavorite
                     currency.isFavorite = isFavorite
+                    if (isFavorite) insertFavoriteRate() else deleteFavoriteRate()
                 },
                 painter = if (isFavorite) painterResource(id = R.drawable.ic_favorites_on) else painterResource(id = R.drawable.ic_favorites_off),
                 contentDescription = "Currency favorite",
@@ -74,5 +79,5 @@ fun CurrencyCard(currency: Currency) {
 @Composable
 @Preview(showBackground = true)
 private fun CurrencyCardPreview() {
-    CurrencyCard(Currency("EUR", "AED", 3.345461, true))
+    CurrencyCard(Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = true))
 }

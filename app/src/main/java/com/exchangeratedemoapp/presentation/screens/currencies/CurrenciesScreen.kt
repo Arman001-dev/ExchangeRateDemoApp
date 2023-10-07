@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.presentation.screens
+package com.exchangeratedemoapp.presentation.screens.currencies
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.exchangeratedemoapp.R
+import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.components.ExpandableItems
 import com.exchangeratedemoapp.presentation.theme.Default
@@ -50,6 +52,10 @@ fun CurrenciesScreen(
 ) {
     val currentCurrency by currenciesViewModel.currentCurrency.collectAsState()
     val exchangeRates by currenciesViewModel.exchangeRates.collectAsState()
+
+    LaunchedEffect(true) {
+        currenciesViewModel.getExchangeRates(CurrenciesEnum.EUR)
+    }
     Column {
         TopAppBar(
             title = {
@@ -103,8 +109,12 @@ fun CurrenciesScreen(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(exchangeRates?.rates ?: emptyList()) { item ->
-                CurrencyCard(currency = item)
+            items(exchangeRates ?: emptyList()) { currency ->
+                CurrencyCard(
+                    currency = currency,
+                    insertFavoriteRate = { currenciesViewModel.setFavoriteRate(currency) },
+                    deleteFavoriteRate = { currenciesViewModel.deleteFavoriteRate(currency) }
+                )
             }
         }
     }
