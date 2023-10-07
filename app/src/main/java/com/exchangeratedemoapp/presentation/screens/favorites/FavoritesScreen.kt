@@ -36,14 +36,7 @@ fun FavoritesScreen(
 ) {
     val favoriteRates by favoritesViewModel.favoriteRates.collectAsState()
 
-//    val items = listOf(
-//        Currency(currency = "EUR", baseCurrency = "BYN", rate = 3.345461, isFavorite = true),
-//        Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = false),
-//        Currency(currency = "AED", baseCurrency = "RUB", rate = 3.345461, isFavorite = true),
-//        Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = true),
-//        Currency(currency = "RUB", baseCurrency = "AED", rate = 6.345461, isFavorite = false)
-//    )
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         favoritesViewModel.getFavoriteRates()
     }
     Column {

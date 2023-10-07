@@ -51,7 +51,7 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
         }
     }
 
-    fun deleteFavoriteRate(currency: Currency){
+    fun deleteFavoriteRate(currency: Currency) {
         viewModelScope.launch {
             exchangeRatesUseCase.deleteFavoriteRate(currency)
         }
