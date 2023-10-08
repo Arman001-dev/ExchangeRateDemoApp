@@ -16,19 +16,16 @@ import androidx.navigation.compose.rememberNavController
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.presentation.navigation.NavBar
 import com.exchangeratedemoapp.presentation.navigation.NavBarItem
-import com.exchangeratedemoapp.presentation.screens.currencies.CurrenciesScreen
 import com.exchangeratedemoapp.presentation.screens.favorites.FavoritesScreen
 
 sealed class BottomBarDestination(val route: String) {
-    data object CurrenciesScreen : BottomBarDestination("currencies-screen")
+    data object CurrenciesMainScreen : BottomBarDestination("currencies-main-screen")
     data object FavoritesScreen : BottomBarDestination("favorites-screen")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
-    onNavigateToFilterScreen: () -> Unit
-) {
+fun MainScreen() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -37,7 +34,7 @@ fun MainScreen(
                 items = listOf(
                     NavBarItem(
                         name = stringResource(R.string.currencies),
-                        route = BottomBarDestination.CurrenciesScreen.route,
+                        route = BottomBarDestination.CurrenciesMainScreen.route,
                         icon = painterResource(id = R.drawable.ic_currencies),
                     ),
                     NavBarItem(
@@ -61,10 +58,13 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(it),
         ) {
-            NavHost(navController = navController, startDestination = BottomBarDestination.CurrenciesScreen.route) {
+            NavHost(
+                navController = navController,
+                startDestination = BottomBarDestination.CurrenciesMainScreen.route,
+            ) {
 
-                composable(BottomBarDestination.CurrenciesScreen.route) {
-                    CurrenciesScreen(onNavigateToFilterScreen = onNavigateToFilterScreen)
+                composable(BottomBarDestination.CurrenciesMainScreen.route) {
+                    CurrencyMainScreen()
                 }
 
                 composable(BottomBarDestination.FavoritesScreen.route) {

@@ -48,13 +48,16 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 @Composable
 fun CurrenciesScreen(
     currenciesViewModel: CurrenciesViewModel = hiltViewModel(),
-    onNavigateToFilterScreen: () -> Unit = {}
+    filter: String = "",
+    onNavigateToFilterScreen: (String?) -> Unit = {}
 ) {
     val currentCurrency by currenciesViewModel.currentCurrency.collectAsState()
     val exchangeRates by currenciesViewModel.exchangeRates.collectAsState()
+    val ratesFilter by currenciesViewModel.ratesFilter.collectAsState()
 
     LaunchedEffect(true) {
-        currenciesViewModel.getExchangeRates(CurrenciesEnum.EUR)
+        currenciesViewModel.setRatesFilter(filter)
+        currenciesViewModel.getExchangeRates(currentCurrency ?: CurrenciesEnum.EUR)
     }
     Column {
         TopAppBar(
@@ -89,7 +92,7 @@ fun CurrenciesScreen(
             Card(
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .clickable { onNavigateToFilterScreen() },
+                    .clickable { onNavigateToFilterScreen(ratesFilter?.label) },
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(width = 1.dp, color = Secondary),
                 colors = CardDefaults.cardColors(containerColor = Default),
