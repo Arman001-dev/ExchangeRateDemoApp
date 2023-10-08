@@ -6,4 +6,6 @@
     <string name="sort_by">SORT BY</string>
     <string name="apply">Apply</string>
     <string name="filters">Filters</string>
+    <string name="no_internet">Oops! It looks like you\'re offline. Please check your internet connection.</string>
+    <string name="do_not_show">Don\'t show</string>
 </resources>

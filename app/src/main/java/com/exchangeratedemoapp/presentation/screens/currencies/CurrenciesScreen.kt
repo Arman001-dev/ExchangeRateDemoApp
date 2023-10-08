@@ -23,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.exchangeratedemoapp.ExchangeRatesApplication
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.components.ExpandableItems
+import com.exchangeratedemoapp.presentation.components.NoInternetDialog
 import com.exchangeratedemoapp.presentation.theme.Default
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -52,9 +57,24 @@ fun CurrenciesScreen(
 ) {
     val currentCurrency by currenciesViewModel.currentCurrency.collectAsState()
     val exchangeRates by currenciesViewModel.exchangeRates.collectAsState()
+    var showNoNetworkDialog by rememberSaveable { mutableStateOf(false) }
+    val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
 
-    LaunchedEffect(true) {
-        currenciesViewModel.getExchangeRates(CurrenciesEnum.EUR)
+    LaunchedEffect(networkState.value) {
+        showNoNetworkDialog = when (networkState.value) {
+            true -> {
+                currenciesViewModel.getExchangeRates(CurrenciesEnum.EUR)
+                false
+            }
+
+            false -> true
+        }
+    }
+    if (showNoNetworkDialog) {
+        NoInternetDialog(
+            onDismissRequest = { showNoNetworkDialog = false },
+            onConfirmButtonClick = { showNoNetworkDialog = false }
+        )
     }
     Column {
         TopAppBar(
@@ -81,10 +101,20 @@ fun CurrenciesScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             currentCurrency?.let {
-                ExpandableItems(it) {
-                    currenciesViewModel.setCurrency(it)
-                    currenciesViewModel.getExchangeRates(it)
-                }
+                ExpandableItems(
+                    currentCurrency = it,
+                    onCurrencyClick = {
+                        showNoNetworkDialog = when (networkState.value) {
+                            true -> {
+                                currenciesViewModel.setCurrency(it)
+                                currenciesViewModel.getExchangeRates(it)
+                                false
+                            }
+
+                            false -> true
+                        }
+                    }
+                )
             }
             Card(
                 modifier = Modifier
