@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,6 +39,7 @@ import com.exchangeratedemoapp.presentation.theme.Secondary
 
 @Composable
 fun ExpandableItems(
+    modifier: Modifier = Modifier,
     currentCurrency: CurrenciesEnum = CurrenciesEnum.EUR,
     onCurrencyClick: (currency: CurrenciesEnum) -> Unit = {}
 ) {
@@ -50,8 +50,7 @@ fun ExpandableItems(
     )
 
     Card(
-        modifier = Modifier
-            .width(310.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(width = 1.dp, color = Secondary),
         colors = CardDefaults.cardColors(containerColor = Default),

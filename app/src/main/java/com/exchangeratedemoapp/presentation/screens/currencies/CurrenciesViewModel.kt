@@ -35,7 +35,8 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
             exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
                 when (result) {
                     is ApiResult.Success -> {
-                        _exchangeRates.update { result.data.rates }
+                        result.data.rates?.let { getAllFavoriteRates(it) }
+//                        _exchangeRates.update { result.data.rates }
                     }
 
                     is ApiResult.Error -> Log.d(Constants.EXCHANGE_RATE_TAG, "Error:${result.message}")
@@ -44,23 +45,24 @@ class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: 
         }
     }
 
-//    fun getAllFavoriteRates() {
-//        viewModelScope.launch {
-//            exchangeRatesUseCase.getAllFavoriteRates().collectLatest { favoriteCurrencies ->
-//                Log.d(Constants.EXCHANGE_RATE_TAG, "CurrenciesViewModel favorites:$favoriteCurrencies")
-//                val list = exchangeRates.value?.toMutableList()?.map {
-//                    it.copy(
-//                        isFavorite = favoriteCurrencies.find { favoriteCurrency ->
-//                            it.key == favoriteCurrency.key
-//                        } != null
-//                    )
-//                }
-//                _exchangeRates.update { currencies ->
-//                    list
-//                }
-//            }
-//        }
-//    }
+    fun getAllFavoriteRates(currencies: List<Currency>) {
+        viewModelScope.launch {
+            exchangeRatesUseCase.getAllFavoriteRates().collectLatest { favoriteCurrencies ->
+                Log.d("aaaDee", "CurrenciesViewModel favorites:$favoriteCurrencies")
+                val list = currencies.toMutableList().map {
+                    it.apply {
+                        isFavorite = favoriteCurrencies.any { favoriteCurrency ->
+                            it.key == favoriteCurrency.key
+                        }
+                    }
+                }
+                Log.d("esInc", "$list")
+                _exchangeRates.update { currencies ->
+                    list
+                }
+            }
+        }
+    }
 
     fun setFavoriteRate(currency: Currency) {
         viewModelScope.launch {

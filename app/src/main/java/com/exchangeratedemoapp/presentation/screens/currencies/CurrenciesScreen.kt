@@ -100,22 +100,21 @@ fun CurrenciesScreen(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            currentCurrency?.let {
-                ExpandableItems(
-                    currentCurrency = it,
-                    onCurrencyClick = {
-                        showNoNetworkDialog = when (networkState.value) {
-                            true -> {
-                                currenciesViewModel.setCurrency(it)
-                                currenciesViewModel.getExchangeRates(it)
-                                false
-                            }
-
-                            false -> true
+            ExpandableItems(
+                modifier = Modifier.weight(1f),
+                currentCurrency = currentCurrency ?: CurrenciesEnum.EUR,
+                onCurrencyClick = {
+                    showNoNetworkDialog = when (networkState.value) {
+                        true -> {
+                            currenciesViewModel.setCurrency(it)
+                            currenciesViewModel.getExchangeRates(it)
+                            false
                         }
+
+                        false -> true
                     }
-                )
-            }
+                }
+            )
             Card(
                 modifier = Modifier
                     .padding(start = 8.dp)
