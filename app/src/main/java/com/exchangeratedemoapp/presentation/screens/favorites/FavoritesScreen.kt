@@ -1,6 +1,5 @@
 package com.exchangeratedemoapp.presentation.screens.favorites
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.domain.utils.base.Constants
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -64,6 +62,7 @@ fun FavoritesScreen(
         ) {
             items(favoriteRates ?: emptyList()) { currency ->
                 CurrencyCard(
+                    showBaseCurrency = true,
                     currency = currency,
                     insertFavoriteRate = { favoritesViewModel.setFavoriteRate(currency) },
                     deleteFavoriteRate = { favoritesViewModel.deleteFavoriteRate(currency) }

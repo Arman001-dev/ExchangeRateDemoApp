@@ -31,6 +31,7 @@ import com.exchangeratedemoapp.presentation.theme.Yellow
 
 @Composable
 fun CurrencyCard(
+    showBaseCurrency: Boolean = false,
     currency: Currency,
     insertFavoriteRate: () -> Unit = {},
     deleteFavoriteRate: () -> Unit = {},
@@ -46,7 +47,7 @@ fun CurrencyCard(
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = currency.currency,
+                text = if (showBaseCurrency) "${currency.baseCurrency}/${currency.currency}" else currency.currency,
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.inter_medium)),
@@ -79,5 +80,5 @@ fun CurrencyCard(
 @Composable
 @Preview(showBackground = true)
 private fun CurrencyCardPreview() {
-    CurrencyCard(Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = true))
+    CurrencyCard(currency = Currency(currency = "EUR", baseCurrency = "AED", rate = 3.345461, isFavorite = true))
 }
