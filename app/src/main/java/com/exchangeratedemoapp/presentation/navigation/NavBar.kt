@@ -35,7 +35,7 @@ fun NavBar(
         Divider(thickness = 1.dp, color = Outline)
         NavigationBar(tonalElevation = 0.dp) {
             items.forEach { navBarItem ->
-                val selected = currentBackStackEntry?.destination?.route == navBarItem.route
+                val selected = currentBackStackEntry?.destination?.parent?.route == navBarItem.route
                 NavigationBarItem(
                     selected = selected,
                     onClick = { onItemClick(navBarItem) },
