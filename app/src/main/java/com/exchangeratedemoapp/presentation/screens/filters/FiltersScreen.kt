@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.FilterOptionsEnum
-import com.exchangeratedemoapp.presentation.screens.favorites.FavoritesScreen
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.OnPrimary
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -48,11 +47,13 @@ import com.exchangeratedemoapp.presentation.theme.TextSecondary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FiltersScreen(
-    currentFilter: String= "",
+    currentFilter: String = "",
     onBackClick: () -> Unit = {},
     onNavigateToCurrenciesScreen: (String) -> Unit = {}
 ) {
-    var selectedFilter by rememberSaveable { mutableStateOf(currentFilter) }
+    var selectedFilter by rememberSaveable {
+        mutableStateOf(if (currentFilter != "") currentFilter else FilterOptionsEnum.CODE_A_Z.label)
+    }
 
     Column {
         TopAppBar(

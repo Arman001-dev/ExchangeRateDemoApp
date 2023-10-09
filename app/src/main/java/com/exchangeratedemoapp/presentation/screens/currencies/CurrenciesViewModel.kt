@@ -26,7 +26,7 @@ class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: Cur
     private val _currencies: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
     val currencies: StateFlow<List<Currency>?> = _currencies.asStateFlow()
 
-    private val _currenciesFilter: MutableStateFlow<FilterOptionsEnum?> = MutableStateFlow(null)
+    private val _currenciesFilter: MutableStateFlow<FilterOptionsEnum?> = MutableStateFlow(FilterOptionsEnum.CODE_A_Z)
     val currenciesFilter: StateFlow<FilterOptionsEnum?> = _currenciesFilter.asStateFlow()
 
     fun setCurrenciesFilter(filter: String?) {
@@ -71,7 +71,6 @@ class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: Cur
                 currenciesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
                     when (result) {
                         is ApiResult.Success -> {
-//                            _currencies.update { result.data.rates }
                             result.data.rates?.let { setFilteredRates(it) }
                         }
 

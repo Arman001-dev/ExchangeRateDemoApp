@@ -63,7 +63,9 @@ fun CurrenciesScreen(
 
 
     LaunchedEffect(true) {
-        currenciesViewModel.setCurrenciesFilter(filter)
+        if (filter != "") {
+            currenciesViewModel.setCurrenciesFilter(filter)
+        }
         currenciesViewModel.getCurrencies(currentCurrency)
         currenciesViewModel.getAllFavoriteCurrencies()
     }
