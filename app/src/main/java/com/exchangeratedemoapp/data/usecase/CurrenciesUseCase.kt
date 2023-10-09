@@ -13,7 +13,7 @@ class CurrenciesUseCase(private val currenciesRepository: CurrenciesRepository, 
 
     suspend operator fun invoke(base: String, symbols: List<String>) = flow {
         val result = currenciesRepository.getExchangeRates(base, symbols)
-        when (result.isSuccessful) {
+        when (result?.isSuccessful) {
             true -> {
                 val rate = toExchangeRate(result.body())
                 val favorites = getAllFavoriteCurrenciesList()
@@ -28,6 +28,7 @@ class CurrenciesUseCase(private val currenciesRepository: CurrenciesRepository, 
             }
 
             false -> emit(ApiResult.Error(result.message()))
+            null -> Unit
         }
     }
 

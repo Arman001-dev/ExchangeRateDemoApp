@@ -57,18 +57,17 @@ fun CurrenciesScreen(
     val currencies by currenciesViewModel.currencies.collectAsState()
     val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
     var currentCurrency by rememberSaveable { mutableStateOf(CurrenciesEnum.EUR) }
+    var lastNetworkState by rememberSaveable { mutableStateOf(networkState.value) }
 
-    LaunchedEffect(networkState.value) {
-        when (networkState.value) {
-            true -> {
-                currenciesViewModel.getCurrencies(currentCurrency)
-                currenciesViewModel.getAllFavoriteCurrencies()
-            }
-
-            false -> {
-                return@LaunchedEffect
-            }
+    LaunchedEffect(true) {
+        currenciesViewModel.getCurrencies(currentCurrency)
+        currenciesViewModel.getAllFavoriteCurrencies()
+    }
+    if (lastNetworkState != networkState.value) {
+        if (networkState.value) {
+            currenciesViewModel.getCurrencies(currentCurrency)
         }
+        lastNetworkState = networkState.value
     }
     Column {
         TopAppBar(

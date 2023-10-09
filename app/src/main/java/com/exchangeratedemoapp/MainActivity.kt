@@ -23,11 +23,7 @@ class MainActivity : ComponentActivity() {
                 var showNoNetworkDialog by rememberSaveable { mutableStateOf(false) }
                 val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
                 LaunchedEffect(key1 = networkState.value) {
-                    showNoNetworkDialog = when (networkState.value) {
-                        true -> false
-
-                        false -> true
-                    }
+                    showNoNetworkDialog = !networkState.value
                 }
 
                 if (showNoNetworkDialog) {
