@@ -1,4 +1,4 @@
-package com.exchangeratedemoapp.ui.theme
+package com.exchangeratedemoapp.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
