@@ -59,11 +59,11 @@ fun CurrenciesScreen(
     val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
     var currentCurrency by rememberSaveable { mutableStateOf(CurrenciesEnum.EUR) }
     var lastNetworkState by rememberSaveable { mutableStateOf(networkState.value) }
-    val ratesFilter by currenciesViewModel.ratesFilter.collectAsState()
+    val currenciesFilter by currenciesViewModel.currenciesFilter.collectAsState()
 
 
     LaunchedEffect(true) {
-        currenciesViewModel.setRatesFilter(filter)
+        currenciesViewModel.setCurrenciesFilter(filter)
         currenciesViewModel.getCurrencies(currentCurrency)
         currenciesViewModel.getAllFavoriteCurrencies()
     }
@@ -116,7 +116,7 @@ fun CurrenciesScreen(
             Card(
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .clickable { onNavigateToFilterScreen(ratesFilter?.label) },
+                    .clickable { onNavigateToFilterScreen(currenciesFilter?.label) },
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(width = 1.dp, color = Secondary),
                 colors = CardDefaults.cardColors(containerColor = Default),

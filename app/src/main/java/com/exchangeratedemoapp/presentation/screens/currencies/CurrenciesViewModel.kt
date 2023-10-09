@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.exchangeratedemoapp.data.usecase.CurrenciesUseCase
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.domain.models.Currency
-import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
+import com.exchangeratedemoapp.domain.models.FilterOptionsEnum
 import com.exchangeratedemoapp.domain.remote.api.models.base.ApiResult
 import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,11 +26,43 @@ class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: Cur
     private val _currencies: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
     val currencies: StateFlow<List<Currency>?> = _currencies.asStateFlow()
 
-    private val _ratesFilter: MutableStateFlow<FiltersOptionEnum?> = MutableStateFlow(null)
-    val ratesFilter: StateFlow<FiltersOptionEnum?> = _ratesFilter.asStateFlow()
+    private val _currenciesFilter: MutableStateFlow<FilterOptionsEnum?> = MutableStateFlow(null)
+    val currenciesFilter: StateFlow<FilterOptionsEnum?> = _currenciesFilter.asStateFlow()
 
-    fun setRatesFilter(filter: String?) {
-        _ratesFilter.update { FiltersOptionEnum.from(filter) }
+    fun setCurrenciesFilter(filter: String?) {
+        _currenciesFilter.update { FilterOptionsEnum.from(filter) }
+    }
+
+    private fun setFilteredRates(exchangeRate: List<Currency>) {
+        when (_currenciesFilter.value) {
+            FilterOptionsEnum.CODE_A_Z -> {
+                _currencies.update {
+                    exchangeRate.sortedBy { it.currency }
+                }
+            }
+
+            FilterOptionsEnum.CODE_Z_A -> {
+                _currencies.update {
+                    exchangeRate.sortedByDescending { it.currency }
+                }
+            }
+
+            FilterOptionsEnum.QUOTE_ASC -> {
+                _currencies.update {
+                    exchangeRate.sortedBy { it.rate }
+                }
+            }
+
+            FilterOptionsEnum.QUOTE_DESC -> {
+                _currencies.update {
+                    exchangeRate.sortedByDescending { it.rate }
+                }
+            }
+
+            else -> {
+                _currencies.update { exchangeRate }
+            }
+        }
     }
 
     fun getCurrencies(base: CurrenciesEnum) {
@@ -39,7 +71,8 @@ class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: Cur
                 currenciesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
                     when (result) {
                         is ApiResult.Success -> {
-                            _currencies.update { result.data.rates }
+//                            _currencies.update { result.data.rates }
+                            result.data.rates?.let { setFilteredRates(it) }
                         }
 
                         is ApiResult.Error -> Log.d(Constants.EXCHANGE_RATE_TAG, "Error:${result.message}")

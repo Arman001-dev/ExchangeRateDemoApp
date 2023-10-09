@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -20,6 +21,7 @@ object NetworkModule {
             .Builder()
             .connectTimeout(60L, TimeUnit.SECONDS)
             .readTimeout(60L, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor())
             .build()
 
     @Provides

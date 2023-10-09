@@ -7,7 +7,7 @@ enum class FilterOptionsEnum(val label: String) {
     QUOTE_DESC("Quote Desc.");
 
     companion object {
-        private val MAP: Map<String, FiltersOptionEnum> = values().associateBy(FiltersOptionEnum::label)
+        private val MAP: Map<String, FilterOptionsEnum> = values().associateBy(FilterOptionsEnum::label)
         fun from(label: String?) = MAP[label]
     }
 }
