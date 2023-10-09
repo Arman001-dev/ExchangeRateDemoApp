@@ -41,7 +41,6 @@ import com.exchangeratedemoapp.R
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.presentation.components.CurrencyCard
 import com.exchangeratedemoapp.presentation.components.ExpandableItems
-import com.exchangeratedemoapp.presentation.components.NoInternetDialog
 import com.exchangeratedemoapp.presentation.theme.Default
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.Outline
@@ -56,26 +55,20 @@ fun CurrenciesScreen(
     onNavigateToFilterScreen: () -> Unit = {}
 ) {
     val currencies by currenciesViewModel.currencies.collectAsState()
-    var showNoNetworkDialog by rememberSaveable { mutableStateOf(false) }
     val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
     var currentCurrency by rememberSaveable { mutableStateOf(CurrenciesEnum.EUR) }
 
     LaunchedEffect(networkState.value) {
-        showNoNetworkDialog = when (networkState.value) {
+        when (networkState.value) {
             true -> {
                 currenciesViewModel.getCurrencies(currentCurrency)
                 currenciesViewModel.getAllFavoriteCurrencies()
-                false
             }
 
-            false -> true
+            false -> {
+                return@LaunchedEffect
+            }
         }
-    }
-    if (showNoNetworkDialog) {
-        NoInternetDialog(
-            onDismissRequest = { showNoNetworkDialog = false },
-            onConfirmButtonClick = { showNoNetworkDialog = false }
-        )
     }
     Column {
         TopAppBar(
@@ -105,14 +98,15 @@ fun CurrenciesScreen(
                 modifier = Modifier.weight(1f),
                 currentCurrency = currentCurrency,
                 onCurrencyClick = {
-                    showNoNetworkDialog = when (networkState.value) {
+                    when (networkState.value) {
                         true -> {
                             currentCurrency = it
                             currenciesViewModel.getCurrencies(it)
-                            false
                         }
 
-                        false -> true
+                        false -> {
+                            return@ExpandableItems
+                        }
                     }
                 }
             )
