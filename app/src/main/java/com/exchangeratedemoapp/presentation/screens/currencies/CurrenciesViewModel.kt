@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.exchangeratedemoapp.data.usecase.CurrenciesUseCase
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.domain.models.Currency
+import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
 import com.exchangeratedemoapp.domain.remote.api.models.base.ApiResult
 import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,13 @@ class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: Cur
 
     private val _currencies: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
     val currencies: StateFlow<List<Currency>?> = _currencies.asStateFlow()
+
+    private val _ratesFilter: MutableStateFlow<FiltersOptionEnum?> = MutableStateFlow(null)
+    val ratesFilter: StateFlow<FiltersOptionEnum?> = _ratesFilter.asStateFlow()
+
+    fun setRatesFilter(filter: String?) {
+        _ratesFilter.update { FiltersOptionEnum.from(filter) }
+    }
 
     fun getCurrencies(base: CurrenciesEnum) {
         viewModelScope.launch {
