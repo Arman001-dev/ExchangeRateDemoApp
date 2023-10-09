@@ -3,76 +3,70 @@ package com.exchangeratedemoapp.presentation.screens.currencies
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.exchangeratedemoapp.data.usecase.ExchangeRatesUseCase
+import com.exchangeratedemoapp.data.usecase.CurrenciesUseCase
 import com.exchangeratedemoapp.domain.models.CurrenciesEnum
 import com.exchangeratedemoapp.domain.models.Currency
 import com.exchangeratedemoapp.domain.remote.api.models.base.ApiResult
 import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CurrenciesViewModel @Inject constructor(private val exchangeRatesUseCase: ExchangeRatesUseCase) : ViewModel() {
+class CurrenciesViewModel @Inject constructor(private val currenciesUseCase: CurrenciesUseCase) : ViewModel() {
 
-    private val _currentCurrency: MutableStateFlow<CurrenciesEnum?> = MutableStateFlow(CurrenciesEnum.EUR)
-    val currentCurrency: StateFlow<CurrenciesEnum?> = _currentCurrency.asStateFlow()
+    private val _currencies: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
+    val currencies: StateFlow<List<Currency>?> = _currencies.asStateFlow()
 
-    private val _exchangeRates: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
-    val exchangeRates: StateFlow<List<Currency>?> = _exchangeRates.asStateFlow()
-
-    fun setCurrency(currency: CurrenciesEnum?) {
-        _currentCurrency.update { currency }
-    }
-
-    fun getExchangeRates(base: CurrenciesEnum) {
+    fun getCurrencies(base: CurrenciesEnum) {
         viewModelScope.launch {
-            exchangeRatesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
-                when (result) {
-                    is ApiResult.Success -> {
-                        result.data.rates?.let { getAllFavoriteRates(it) }
-//                        _exchangeRates.update { result.data.rates }
-                    }
+            withContext(Dispatchers.IO) {
+                currenciesUseCase.invoke(base.label, CurrenciesEnum.values().toMutableList().apply { remove(base) }.map { it.label }).collectLatest { result ->
+                    when (result) {
+                        is ApiResult.Success -> {
+                            _currencies.update { result.data.rates }
+                        }
 
-                    is ApiResult.Error -> Log.d(Constants.EXCHANGE_RATE_TAG, "Error:${result.message}")
+                        is ApiResult.Error -> Log.d(Constants.EXCHANGE_RATE_TAG, "Error:${result.message}")
+                    }
                 }
             }
         }
     }
 
-    fun getAllFavoriteRates(currencies: List<Currency>) {
+    fun getAllFavoriteCurrencies() {
         viewModelScope.launch {
-            exchangeRatesUseCase.getAllFavoriteRates().collectLatest { favoriteCurrencies ->
-                Log.d("aaaDee", "CurrenciesViewModel favorites:$favoriteCurrencies")
-                val list = currencies.toMutableList().map {
-                    it.apply {
+            currenciesUseCase.getAllFavoriteCurrencies().collectLatest { favoriteCurrencies ->
+                val list = _currencies.value?.toMutableList()?.map {
+                    it.copy(
                         isFavorite = favoriteCurrencies.any { favoriteCurrency ->
                             it.key == favoriteCurrency.key
                         }
-                    }
+                    )
                 }
-                Log.d("esInc", "$list")
-                _exchangeRates.update { currencies ->
+                _currencies.update {
                     list
                 }
             }
         }
     }
 
-    fun setFavoriteRate(currency: Currency) {
+    fun insertFavoriteCurrency(currency: Currency) {
         viewModelScope.launch {
-            exchangeRatesUseCase.insertFavoriteRate(currency)
+            currenciesUseCase.insertFavoriteCurrency(currency)
         }
     }
 
-    fun deleteFavoriteRate(currency: Currency) {
+    fun deleteFavoriteCurrency(currency: Currency) {
         viewModelScope.launch {
-            exchangeRatesUseCase.deleteFavoriteRate(currency)
+            currenciesUseCase.deleteFavoriteCurrency(currency)
         }
     }
 }

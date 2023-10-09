@@ -1,18 +1,17 @@
 package com.exchangeratedemoapp.data.usecase
 
 import com.exchangeratedemoapp.domain.models.Currency
-import com.exchangeratedemoapp.domain.remote.api.repositories.DatabaseRepository
-import kotlinx.coroutines.flow.flow
+import com.exchangeratedemoapp.domain.remote.api.repositories.FavoriteCurrenciesDatabaseRepository
 
-class FavoritesUseCase(private val databaseRepository: DatabaseRepository) {
+class FavoritesUseCase(private val favoriteCurrenciesDatabaseRepository: FavoriteCurrenciesDatabaseRepository) {
 
-    fun getAllFavoriteRate() = databaseRepository.getAllRates()
+    fun getAllFavoriteCurrencies() = favoriteCurrenciesDatabaseRepository.getAllFavoriteCurrencies()
 
-    suspend fun insertFavoriteRate(currency: Currency) {
-        databaseRepository.insertFavoriteRate(currency)
+    suspend fun insertFavoriteCurrency(currency: Currency) {
+        favoriteCurrenciesDatabaseRepository.insertFavoriteCurrency(currency)
     }
 
-    suspend fun deleteFavoriteRate(currency: Currency) {
-        databaseRepository.deleteFavoriteRate(currency)
+    suspend fun deleteFavoriteCurrency(currency: Currency) {
+        favoriteCurrenciesDatabaseRepository.deleteFavoriteCurrency(currency)
     }
 }

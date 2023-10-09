@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exchangeratedemoapp.R
-import com.exchangeratedemoapp.domain.models.FiltersOptionEnum
+import com.exchangeratedemoapp.domain.models.FilterOptionsEnum
 import com.exchangeratedemoapp.presentation.screens.favorites.FavoritesScreen
 import com.exchangeratedemoapp.presentation.theme.Header
 import com.exchangeratedemoapp.presentation.theme.OnPrimary
@@ -85,7 +85,7 @@ fun FiltersScreen(
                     color = TextSecondary,
                 ),
             )
-            FiltersOptionEnum.values().forEach { filter ->
+            FilterOptionsEnum.values().forEach { filter ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

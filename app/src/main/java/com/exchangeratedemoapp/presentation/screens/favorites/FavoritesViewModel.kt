@@ -18,27 +18,33 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(private val favoritesUseCase: FavoritesUseCase) : ViewModel() {
 
-    private val _favoriteRates: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
-    val favoriteRates: StateFlow<List<Currency>?> = _favoriteRates.asStateFlow()
+    private val _favoriteCurrencies: MutableStateFlow<List<Currency>?> = MutableStateFlow(emptyList())
+    val favoriteCurrencies: StateFlow<List<Currency>?> = _favoriteCurrencies.asStateFlow()
 
-    fun getFavoriteRates() {
+    fun getFavoriteCurrencies() {
         viewModelScope.launch {
-            favoritesUseCase.getAllFavoriteRate().collectLatest { favorites ->
+            favoritesUseCase.getAllFavoriteCurrencies().collectLatest { favorites ->
                 Log.d(Constants.EXCHANGE_RATE_TAG, "FavoriteViewModel favorites:$favorites")
-                _favoriteRates.update { favorites.toMutableList() }
+                _favoriteCurrencies.update {
+                    favorites.toMutableList().map {
+                        it.apply {
+                            isFavorite = true
+                        }
+                    }
+                }
             }
         }
     }
 
-    fun setFavoriteRate(currency: Currency) {
+    fun insertFavoriteCurrency(currency: Currency) {
         viewModelScope.launch {
-            favoritesUseCase.insertFavoriteRate(currency)
+            favoritesUseCase.insertFavoriteCurrency(currency)
         }
     }
 
-    fun deleteFavoriteRate(currency: Currency) {
+    fun deleteFavoriteCurrency(currency: Currency) {
         viewModelScope.launch {
-            favoritesUseCase.deleteFavoriteRate(currency)
+            favoritesUseCase.deleteFavoriteCurrency(currency)
         }
     }
 }

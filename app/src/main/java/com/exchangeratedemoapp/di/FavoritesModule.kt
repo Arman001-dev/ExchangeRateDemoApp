@@ -1,7 +1,7 @@
 package com.exchangeratedemoapp.di
 
 import com.exchangeratedemoapp.data.usecase.FavoritesUseCase
-import com.exchangeratedemoapp.domain.remote.api.repositories.DatabaseRepository
+import com.exchangeratedemoapp.domain.remote.api.repositories.FavoriteCurrenciesDatabaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 object FavoritesModule {
     @Provides
     @Singleton
-    fun provideFavoritesUseCase(databaseRepository: DatabaseRepository): FavoritesUseCase {
-        return FavoritesUseCase(databaseRepository)
+    fun provideFavoritesUseCase(favoriteCurrenciesDatabaseRepository: FavoriteCurrenciesDatabaseRepository): FavoritesUseCase {
+        return FavoritesUseCase(favoriteCurrenciesDatabaseRepository)
     }
 }

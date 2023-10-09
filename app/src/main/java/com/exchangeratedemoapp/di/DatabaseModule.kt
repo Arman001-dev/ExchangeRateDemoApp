@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.exchangeratedemoapp.data.local.database.CurrencyDao
 import com.exchangeratedemoapp.data.local.database.CurrencyDatabase
-import com.exchangeratedemoapp.data.remote.api.net.ExchangeRatesApiService
-import com.exchangeratedemoapp.data.remote.api.repositories.ApiRequestRepositoryImpl
-import com.exchangeratedemoapp.data.remote.api.repositories.DatabaseRepositoryImpl
-import com.exchangeratedemoapp.domain.remote.api.repositories.ApiRequestRepository
-import com.exchangeratedemoapp.domain.remote.api.repositories.DatabaseRepository
+import com.exchangeratedemoapp.data.remote.api.repositories.FavoriteCurrenciesDatabaseRepositoryImpl
+import com.exchangeratedemoapp.domain.remote.api.repositories.FavoriteCurrenciesDatabaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object DatabaseModule {
 
     @Provides
     @Singleton
@@ -38,13 +35,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiRequestRepository(api: ExchangeRatesApiService): ApiRequestRepository {
-        return ApiRequestRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDatabaseRepository(dao: CurrencyDao): DatabaseRepository {
-        return DatabaseRepositoryImpl(dao)
+    fun provideDatabaseRepository(dao: CurrencyDao): FavoriteCurrenciesDatabaseRepository {
+        return FavoriteCurrenciesDatabaseRepositoryImpl(dao)
     }
 }

@@ -34,10 +34,10 @@ import com.exchangeratedemoapp.presentation.theme.TextDefault
 fun FavoritesScreen(
     favoritesViewModel: FavoritesViewModel = hiltViewModel()
 ) {
-    val favoriteRates by favoritesViewModel.favoriteRates.collectAsState()
+    val favoriteCurrencies by favoritesViewModel.favoriteCurrencies.collectAsState()
 
     LaunchedEffect(true) {
-        favoritesViewModel.getFavoriteRates()
+        favoritesViewModel.getFavoriteCurrencies()
     }
     Column {
         TopAppBar(
@@ -60,12 +60,14 @@ fun FavoritesScreen(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(favoriteRates ?: emptyList()) { currency ->
+            items(favoriteCurrencies ?: emptyList(), key = {
+                it.key
+            }) { currency ->
                 CurrencyCard(
                     showBaseCurrency = true,
                     currency = currency,
-                    insertFavoriteRate = { favoritesViewModel.setFavoriteRate(currency) },
-                    deleteFavoriteRate = { favoritesViewModel.deleteFavoriteRate(currency) }
+                    insertFavoriteRate = { favoritesViewModel.insertFavoriteCurrency(currency) },
+                    deleteFavoriteRate = { favoritesViewModel.deleteFavoriteCurrency(currency) }
                 )
             }
         }

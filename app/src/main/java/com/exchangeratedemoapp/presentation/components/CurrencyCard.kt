@@ -10,10 +10,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,7 +33,6 @@ fun CurrencyCard(
     deleteFavoriteRate: () -> Unit = {},
 ) {
     Card(colors = CardDefaults.cardColors(containerColor = com.exchangeratedemoapp.presentation.theme.Card)) {
-        var isFavorite by rememberSaveable { mutableStateOf(currency.isFavorite) }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -65,13 +60,11 @@ fun CurrencyCard(
             )
             Icon(
                 modifier = Modifier.clickable {
-                    isFavorite = !isFavorite
-                    currency.isFavorite = isFavorite
-                    if (isFavorite) insertFavoriteRate() else deleteFavoriteRate()
+                    if (!currency.isFavorite) insertFavoriteRate() else deleteFavoriteRate()
                 },
-                painter = if (isFavorite) painterResource(id = R.drawable.ic_favorites_on) else painterResource(id = R.drawable.ic_favorites_off),
+                painter = if (currency.isFavorite) painterResource(id = R.drawable.ic_favorites_on) else painterResource(id = R.drawable.ic_favorites_off),
                 contentDescription = "Currency favorite",
-                tint = if (isFavorite) Yellow else Secondary,
+                tint = if (currency.isFavorite) Yellow else Secondary,
             )
         }
     }

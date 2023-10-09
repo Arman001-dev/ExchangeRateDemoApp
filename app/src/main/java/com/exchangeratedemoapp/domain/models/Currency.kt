@@ -10,6 +10,5 @@ data class Currency(
     val baseCurrency: String,
     val rate: Double,
     var isFavorite: Boolean = false,
-    @PrimaryKey
-    val key: String = currency + baseCurrency,
+    @PrimaryKey val key: String = baseCurrency + currency,
 ) : Serializable

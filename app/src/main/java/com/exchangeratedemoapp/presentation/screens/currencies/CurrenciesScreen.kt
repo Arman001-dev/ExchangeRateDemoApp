@@ -55,15 +55,16 @@ fun CurrenciesScreen(
     currenciesViewModel: CurrenciesViewModel = hiltViewModel(),
     onNavigateToFilterScreen: () -> Unit = {}
 ) {
-    val currentCurrency by currenciesViewModel.currentCurrency.collectAsState()
-    val exchangeRates by currenciesViewModel.exchangeRates.collectAsState()
+    val currencies by currenciesViewModel.currencies.collectAsState()
     var showNoNetworkDialog by rememberSaveable { mutableStateOf(false) }
     val networkState = ExchangeRatesApplication.networkStateFlow.collectAsState()
+    var currentCurrency by rememberSaveable { mutableStateOf(CurrenciesEnum.EUR) }
 
     LaunchedEffect(networkState.value) {
         showNoNetworkDialog = when (networkState.value) {
             true -> {
-                currenciesViewModel.getExchangeRates(CurrenciesEnum.EUR)
+                currenciesViewModel.getCurrencies(currentCurrency)
+                currenciesViewModel.getAllFavoriteCurrencies()
                 false
             }
 
@@ -102,12 +103,12 @@ fun CurrenciesScreen(
         ) {
             ExpandableItems(
                 modifier = Modifier.weight(1f),
-                currentCurrency = currentCurrency ?: CurrenciesEnum.EUR,
+                currentCurrency = currentCurrency,
                 onCurrencyClick = {
                     showNoNetworkDialog = when (networkState.value) {
                         true -> {
-                            currenciesViewModel.setCurrency(it)
-                            currenciesViewModel.getExchangeRates(it)
+                            currentCurrency = it
+                            currenciesViewModel.getCurrencies(it)
                             false
                         }
 
@@ -138,11 +139,13 @@ fun CurrenciesScreen(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(exchangeRates ?: emptyList()) { currency ->
+            items(currencies ?: emptyList(), key = {
+                it.key
+            }) { currency ->
                 CurrencyCard(
                     currency = currency,
-                    insertFavoriteRate = { currenciesViewModel.setFavoriteRate(currency) },
-                    deleteFavoriteRate = { currenciesViewModel.deleteFavoriteRate(currency) }
+                    insertFavoriteRate = { currenciesViewModel.insertFavoriteCurrency(currency) },
+                    deleteFavoriteRate = { currenciesViewModel.deleteFavoriteCurrency(currency) }
                 )
             }
         }

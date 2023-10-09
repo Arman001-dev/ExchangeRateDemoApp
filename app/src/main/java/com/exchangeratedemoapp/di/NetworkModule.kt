@@ -1,6 +1,5 @@
 package com.exchangeratedemoapp.di
 
-import com.exchangeratedemoapp.data.remote.api.net.ExchangeRatesApiService
 import com.exchangeratedemoapp.domain.utils.base.Constants
 import dagger.Module
 import dagger.Provides
@@ -9,6 +8,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,6 +18,8 @@ object NetworkModule {
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient
             .Builder()
+            .connectTimeout(60L, TimeUnit.SECONDS)
+            .readTimeout(60L, TimeUnit.SECONDS)
             .build()
 
     @Provides

@@ -18,6 +18,9 @@ interface CurrencyDao {
     @Query("SELECT * FROM currency")
     fun getAllRates(): Flow<List<Currency>>
 
+    @Query("SELECT * FROM currency")
+    fun getAllRatesList(): List<Currency>
+
     @Delete
     suspend fun deleteRate(currency: Currency)
 }
