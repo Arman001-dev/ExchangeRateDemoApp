@@ -4,9 +4,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -92,48 +95,13 @@ fun CurrenciesScreen(
                 navigationIconContentColor = Primary
             )
         )
-        Row(
+        Box(
             modifier = Modifier
                 .background(Header)
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            ExpandableItems(
-                modifier = Modifier.weight(1f),
-                currentCurrency = currentCurrency,
-                onCurrencyClick = {
-                    when (networkState.value) {
-                        true -> {
-                            currentCurrency = it
-                            currenciesViewModel.getCurrencies(it)
-                        }
-
-                        false -> {
-                            return@ExpandableItems
-                        }
-                    }
-                }
-            )
-            Card(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .clickable { onNavigateToFilterScreen(currenciesFilter?.label) },
-                shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(width = 1.dp, color = Secondary),
-                colors = CardDefaults.cardColors(containerColor = Default),
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(8.dp),
-                    painter = painterResource(id = R.drawable.ic_filtr),
-                    contentDescription = null,
-                    tint = Primary
-                )
-            }
-        }
+                .height(50.dp)
+                .fillMaxSize()
+        )
         Divider(thickness = 1.dp, color = Outline)
-
         LazyColumn(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -147,6 +115,46 @@ fun CurrenciesScreen(
                     deleteFavoriteRate = { currenciesViewModel.deleteFavoriteCurrency(currency) }
                 )
             }
+        }
+    }
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 60.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        ExpandableItems(
+            modifier = Modifier.weight(1f),
+            currentCurrency = currentCurrency,
+            onCurrencyClick = {
+                when (networkState.value) {
+                    true -> {
+                        currentCurrency = it
+                        currenciesViewModel.getCurrencies(it)
+                    }
+
+                    false -> {
+                        return@ExpandableItems
+                    }
+                }
+            }
+        )
+        Card(
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .clickable { onNavigateToFilterScreen(currenciesFilter?.label) },
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(width = 1.dp, color = Secondary),
+            colors = CardDefaults.cardColors(containerColor = Default),
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(8.dp),
+                painter = painterResource(id = R.drawable.ic_filtr),
+                contentDescription = null,
+                tint = Primary
+            )
         }
     }
 }

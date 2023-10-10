@@ -7,5 +7,5 @@ object Constants {
     const val SEMICOLON = ","
 
     const val EXCHANGE_RATE_BASE_URL = "https://api.apilayer.com/exchangerates_data/"
-    const val EXCHANGE_RATE_API_KEY = "RnX7MCCdDuXEbXvvDy4xQZJqhkHeVMkL"
+    const val EXCHANGE_RATE_API_KEY = "ehlO7m22BBADe3gzbMXTdQufWXN2JWgy"
 }
